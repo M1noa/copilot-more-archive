@@ -60,7 +60,7 @@ class CopilotProxy:
 
 
 class ProxyController:
-    def __init__(self, host: str = "127.0.0.1", port: int = 8080):
+    def __init__(self, host: str = "0.0.0.0", port: int = 8080):
         self.host = host
         self.port = port
         self.loop = asyncio.new_event_loop()
@@ -133,7 +133,7 @@ def find_available_port(start_port: int = 8080) -> int:
     while port < 65535:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.bind(("127.0.0.1", port))
+                s.bind(("0.0.0.0", port))
                 return port
         except OSError:
             port += 1
@@ -167,7 +167,7 @@ if RECORD_TRAFFIC:
 def start_proxy():
     global proxy_url, proxy_controller
     try:
-        host, port = "127.0.0.1", find_available_port()
+        host, port = "0.0.0.0", find_available_port()
         proxy_controller = ProxyController(host, port)
         proxy_url = f"http://{host}:{port}"
         proxy_controller.run()
